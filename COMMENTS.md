@@ -1,0 +1,2 @@
+1. A suggestion: I think the most visually clear approach would be to have the main window take up 50% of the pie chart, and all the other windows share the remaining 50% in equal sizes.
+2. he selected task could stand out a bit more though. Maybe ditch the datetime in the inner circle and try a pointer instead?
