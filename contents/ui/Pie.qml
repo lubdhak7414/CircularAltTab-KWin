@@ -20,7 +20,6 @@ Rectangle {
   readonly property string currentCaption: (current>=0 && current<pices.count && pices.itemAt(current))
       ? pices.itemAt(current).caption : ""
 
-  signal mousePositionChanged(var mouse);
   signal clicked(var mouse);
   signal closeRequested(int idx);
 
@@ -119,7 +118,6 @@ Rectangle {
 
     onPositionChanged: (mouse) => {
       mouse.accepted =false;
-      mousePositionChanged(mouse);
       if ( !containsMouse ) { return; }
       pie.current =getPieIdx(mouse.x, mouse.y);
     }

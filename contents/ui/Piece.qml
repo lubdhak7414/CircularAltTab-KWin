@@ -18,9 +18,8 @@ Item {
 
   // half-angle in radians (used frequently in arc calculations)
   readonly property double angle2: angle*Math.PI/360.0
-  // chord lengths at outer and inner radii
+  // chord length at outer radius
   readonly property double chord1: 2.0*rOut*Math.sin(angle2)
-  readonly property double chord2: 2.0*rIn*Math.sin(angle2)
 
   // canvas must be wide enough for the full arc (extends 'offset' beyond chord)
   width: chord1 + 2*offset
