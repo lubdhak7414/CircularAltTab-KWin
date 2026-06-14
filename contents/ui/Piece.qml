@@ -103,7 +103,7 @@ Item {
       id: fallbackIcon
       visible: piece.minimized
       source: icon.source
-      width: Math.min(piece.width*0.45, 64)
+      width: Math.min(piece.width*0.45, Kirigami.Units.iconSizes.large)
       height: width
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.top: parent.top
@@ -118,8 +118,8 @@ Item {
 
     Kirigami.Icon {
       id: icon
-      width: 64 //-- логотип окна крупнее (>=2.5x от прежних 24)
-      height: 64
+      width: Kirigami.Units.iconSizes.large //-- логотип окна крупнее
+      height: Kirigami.Units.iconSizes.large
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.top: parent.top
       //-- по центру кольца (радиус ~ (rIn+rOut)/2), а не у самого центра пирога —

@@ -98,8 +98,8 @@ KWin.TabBoxSwitcher {
         Text {
           id: captionLabel
           anchors.horizontalCenter: parent.horizontalCenter
-          anchors.top: parent.verticalCenter
-          anchors.topMargin: 4
+          anchors.top: parent.top
+          anchors.topMargin: 65 //-- ниже основания указателя (needle base = height*0.30 ≈ 24 при 180° → bottom ≈ 56)
           width: pie.inRadius*6 //-- заметно шире центрального отверстия, чтобы имя не обрезалось так рано
           horizontalAlignment: Text.AlignHCenter
           wrapMode: Text.Wrap

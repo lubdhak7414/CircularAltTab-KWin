@@ -6,11 +6,11 @@ Rectangle {
   color: "transparent"
 
   property alias model: pices.model
-  property double ringHeight: 220
-  property double inRadius: 40
+  property double ringHeight: Kirigami.Units.gridUnit*12
+  property double inRadius: Kirigami.Units.gridUnit*2
   property int current: -1 //-- Индекс активного куска
   property var ringPieces: [] //-- Сколько итемов показывать в каждом кольце. В последнем кольце будут все, кто не влез.
-  property double ringSpacing: 10 //-- Расстояние между кольцами
+  property double ringSpacing: Kirigami.Units.gridUnit*0.5 //-- Расстояние между кольцами
   readonly property int ringsCount: _private.ringPieces.length //-- Сколько фактически колец
   property alias bg: bg
 
