@@ -110,7 +110,7 @@ Item {
       height: width
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.top: parent.top
-      anchors.topMargin: (rOut-rIn)/2.0
+      anchors.topMargin: (rOut-rIn)/2 - height/2
       smooth: true
       transform: Rotation {
         origin.x: fallbackIcon.width/2
