@@ -7,7 +7,7 @@ import org.kde.plasma.components as PlasmaComponents3
 import org.kde.kwin as KWin
 
 /**
-* @brief Круговой переключатель окон (KWin TabBox, Plasma 6)
+* @brief Circular window switcher (KWin TabBox, Plasma 6)
 * @ref https://github.com/KDE/kwin/
 * @ref https://develop.kde.org/docs/plasma/kwin/api/
 */
@@ -18,7 +18,7 @@ KWin.TabBoxSwitcher {
     id: wnd
     width: pie.implicitWidth
     height: pie.implicitHeight
-    visible: false //-- F3: видимостью управляем вручную ради плавного fade
+    visible: false
     flags: Qt.BypassWindowManagerHint | Qt.FramelessWindowHint
     color: "transparent"
 
@@ -26,13 +26,13 @@ KWin.TabBoxSwitcher {
       id: pie
       model: tabBox.model
       bg.color: Kirigami.Theme.backgroundColor
-      opacity: 0.0 //-- F3: плавно появляемся/исчезаем
+      opacity: 0.0
 
       Behavior on opacity {
         NumberAnimation {
           duration: Kirigami.Units.longDuration
           easing.type: Easing.InOutQuad
-          //-- скрываем окно только когда полностью прозрачно ("в последний момент")
+          // hide window only once fully transparent
           onFinished: if ( pie.opacity===0.0 ) { wnd.visible =false; }
         }
       }
@@ -41,18 +41,15 @@ KWin.TabBoxSwitcher {
         tabBox.model.activate(pie.current);
       }
 
-      onCloseRequested: (idx)=>{ //-- F6: средняя кнопка мыши закрывает окно
+      onCloseRequested: (idx)=>{
         if ( idx>=0 ) { tabBox.model.close(idx); }
       }
 
       onCurrentChanged: {
-        //-- Нет выбранного - курсор увели, держим выбор, сделанный с клавиатуры
         if ( current<0 ) { current =tabBox.currentIndex; }
-        //-- F5: наведение мышью делает кусок активируемым по отпусканию модификатора
         else if ( tabBox.currentIndex!==current ) { tabBox.currentIndex =current; }
       }
 
-      //-- F2: указатель на выбранный кусок + заголовок окна вместо часов
       Item {
         id: centerItem
         anchors.centerIn: parent
@@ -62,7 +59,7 @@ KWin.TabBoxSwitcher {
 
         readonly property double targetAngle: pie.currentAngle
         readonly property bool hasTarget: !isNaN(targetAngle)
-        property double lastAngle: 0 //-- держим последний угол, пока выбор отсутствует
+        property double lastAngle: 0
         onTargetAngleChanged: if ( hasTarget ) { lastAngle =targetAngle; }
 
         Canvas {
@@ -99,13 +96,14 @@ KWin.TabBoxSwitcher {
           id: captionLabel
           anchors.horizontalCenter: parent.horizontalCenter
           anchors.top: parent.top
-          anchors.topMargin: pie.inRadius*1.6 //-- ниже основания указателя (needle base при 180° ≈ inRadius*1.4)
-          width: pie.inRadius*6 //-- заметно шире центрального отверстия, чтобы имя не обрезалось так рано
+          // below needle base when pointing down (base at inRadius*1.4)
+          anchors.topMargin: pie.inRadius*1.6
+          // wider than center hole so title doesn't clip early
+          width: pie.inRadius*6
           horizontalAlignment: Text.AlignHCenter
           wrapMode: Text.Wrap
           maximumLineCount: 3
           elide: Text.ElideRight
-          //-- ~на 2/3 крупнее прежнего (был smallFont)
           font.family: Kirigami.Theme.defaultFont.family
           font.pointSize: Math.round(Kirigami.Theme.defaultFont.pointSize*1.5)
           color: Kirigami.Theme.textColor
@@ -117,19 +115,16 @@ KWin.TabBoxSwitcher {
     }
   }
 
-  //-- F3: реакция на показ/скрытие переключателя
   onVisibleChanged: {
     if ( visible ) {
-      //-- Сбрасываем current ПЕРЕД updateData, чтобы привязки (currentAngle,
-      //-- currentCaption) гарантированно переоцениться после создания делегатов.
+      // reset current BEFORE updateData so bindings re-evaluate after delegates are created
       pie.current =-1;
       pie.updateData();
       wnd.x =KWin.Workspace.cursorPos.x-pie.implicitWidth/2;
       wnd.y =KWin.Workspace.cursorPos.y-pie.implicitHeight/2;
       wnd.visible =true;
       pie.opacity =1.0;
-      //-- Восстанавливаем current после того, как Repeater создал делегаты,
-      //-- иначе pices.itemAt(current)==null → заголовок/указатель пустые.
+      // restore current after Repeater created delegates, otherwise itemAt(current)==null
       showSelectTimer.restart();
     } else {
       pie.opacity =0.0;
