@@ -1,0 +1,19 @@
+# AI agent files
+CLAUDE.md
+AGENTS.md
+memories/
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Temp
+tests_to_perform.txt
