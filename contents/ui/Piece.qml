@@ -20,8 +20,8 @@ Item {
   readonly property double chord1: 2.0*rOut*Math.sin(angle2) //-- Длина хорды центрального угла (в градусах)
   readonly property double chord2: 2.0*rIn*Math.sin(angle2)
 
-  width: chord1
-  height: rOut + 2 //-- +2 чтобы обводка акцентного кольца не обрезалась
+  width: chord1 + 2*offset //-- Canvas должен вмещать дугу целиком (arc выходит за chord на offset)
+  height: rOut + 6 //-- запас под масштабирование 1.06
 
   transform: Rotation {
     origin {
@@ -139,6 +139,7 @@ Item {
 
   //-- F2: акцентное кольцо вокруг выбранного куска.
   //-- Рисуется ВНЕ maskedContent, поэтому OpacityMask его не обрезает.
+  //-- Canvas шириной chord1+2*offset — дуга вмещается целиком, смещение не нужно.
   Canvas {
     id: accentRing
     anchors.fill: parent

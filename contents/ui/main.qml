@@ -74,9 +74,9 @@ KWin.TabBoxSwitcher {
             let ctx =getContext("2d");
             ctx.reset();
             const cx =width/2.0;
-            const tip =2.0;
-            const baseY =height*0.40;
-            const bw =width*0.13;
+            const tip =8.0;
+            const baseY =height*0.30;
+            const bw =width*0.08;
             ctx.beginPath();
             ctx.moveTo(cx, tip);
             ctx.lineTo(cx-bw, baseY);
@@ -109,6 +109,8 @@ KWin.TabBoxSwitcher {
           font.family: Kirigami.Theme.defaultFont.family
           font.pointSize: Math.round(Kirigami.Theme.defaultFont.pointSize*1.5)
           color: Kirigami.Theme.textColor
+          style: Text.Outline
+          styleColor: Kirigami.Theme.backgroundColor
           text: pie.currentCaption
         }
       }

@@ -25,7 +25,7 @@ Rectangle {
   signal clicked(var mouse);
   signal closeRequested(int idx); //-- F6: запрос закрытия окна по индексу
 
-  implicitHeight: inRadius*2+(ringHeight+ringSpacing)*ringsCount*2
+  implicitHeight: inRadius*2+(ringHeight+ringSpacing)*ringsCount*2 + 0.14*((ringHeight+ringSpacing)*ringsCount+inRadius) //-- запас под scale 1.06 (piece шире на 2*offset)
   implicitWidth: implicitHeight
 
   QtObject {
@@ -110,6 +110,7 @@ Rectangle {
     Rectangle {
       id: bg
       anchors.fill: parent
+      anchors.margins: 0.07*((ringHeight+ringSpacing)*ringsCount+inRadius) //-- bg только по реальному пирогу, без запаса под scale
       radius: width/2
       color: "transparent"
     }
@@ -164,10 +165,11 @@ Rectangle {
         caption: model.caption
         minimized: model.minimized
         isSelected: pie.current === index
+        z: isSelected ? 1 : 0 //-- выбранный кусок поверх соседей, чтобы акцентное кольцо не перекрывалось
         //-- Выделение без переразмещения: невыбранные приглушаем, выбранный —
         //-- полная яркость + лёгкий радиальный «pop» (scale от центра пирога).
         opacity: (pie.current>=0 && pie.current!==index)? 0.6 : (model.minimized? 0.7 : 1.0)
-        transformOrigin: Item.Bottom //-- низ-центр куска = центр пирога
+        transformOrigin: Item.Center //-- масштабируем от центра, чтобы кусок не выходил за окно
         scale: (pie.current===index)? 1.06 : 1.0
         Behavior on opacity { NumberAnimation { duration: 100; } }
         Behavior on scale { NumberAnimation { duration: 100; } }
