@@ -155,8 +155,8 @@ Rectangle {
         // scale from center to avoid clipping outside the window
         transformOrigin: Item.Center
         scale: (pie.current===index)? 1.06 : 1.0
-        Behavior on opacity { NumberAnimation { duration: 100; } }
-        Behavior on scale { NumberAnimation { duration: 100; } }
+        Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration; } }
+        Behavior on scale { NumberAnimation { duration: Kirigami.Units.shortDuration; } }
 
         rIn: pie.inRadius+((pie.ringHeight+pie.ringSpacing)*ringIdx)
         rOut: rIn+pie.ringHeight
@@ -169,11 +169,11 @@ Rectangle {
         icon.source: model.icon
 
         Behavior on angle {
-          NumberAnimation { duration: 100; }
+          NumberAnimation { duration: Kirigami.Units.shortDuration; }
         }
 
         Behavior on rotation {
-          NumberAnimation { duration: 100; }
+          NumberAnimation { duration: Kirigami.Units.shortDuration; }
         }
       }
     }
