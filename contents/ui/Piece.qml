@@ -46,7 +46,7 @@ Item {
       maskSource: mask
     }
 
-    // annular sector mask — clips content (preview + icons) to donut-segment shape
+    // annular sector mask - clips content (preview + icons) to donut-segment shape
     Canvas {
       id: mask
       anchors.fill: parent

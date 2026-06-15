@@ -37,7 +37,7 @@ KWin.TabBoxSwitcher {
       }
 
       onCurrentChanged: {
-        // no hovered piece — hold keyboard selection
+        // no hovered piece - hold keyboard selection
         if ( current<0 ) { current =tabBox.currentIndex; }
         // hover writes currentIndex so Alt-release activates the hovered piece
         else if ( tabBox.currentIndex!==current ) { tabBox.currentIndex =current; }

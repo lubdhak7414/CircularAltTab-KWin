@@ -15,13 +15,15 @@ Rectangle {
   readonly property double baseRingSpacing: Kirigami.Units.gridUnit*0.5
   // 1.0 up to 4 windows, then shrinks ~3%/window, clamped to [0.55, 1.0]
   readonly property double sizeFactor: Math.min(1.0, Math.max(0.55, 1.0-(pices.count-4)*0.03))
-  property double ringHeight: baseRingHeight*sizeFactor
+  // a lone window gets a thicker ring band so its single preview isn't cramped
+  readonly property double singleBoost: pices.count===1 ? 1.3 : 1.0
+  property double ringHeight: baseRingHeight*sizeFactor*singleBoost
   property double inRadius: baseInRadius*sizeFactor
   property double ringSpacing: baseRingSpacing*sizeFactor
   readonly property int ringsCount: _private.ringPieces.length
   property alias bg: bg
 
-  // angle and caption of the selected piece — drives the center pointer/label
+  // angle and caption of the selected piece - drives the center pointer/label
   readonly property double currentAngle: (current>=0 && current<pices.count && pices.itemAt(current))
       ? pices.itemAt(current).rotation : NaN
   readonly property string currentCaption: (current>=0 && current<pices.count && pices.itemAt(current))
@@ -157,9 +159,10 @@ Rectangle {
         readonly property int ringIdx: _private.pieceToRing[index] || 0
         readonly property int piecesInRing: _private.ringPieces[ringIdx] || 1
         readonly property int idxInRing: _private.idxsInRing[index] || 0
-        // cap at 300° so a lone window isn't a degenerate 360° slice (chord→0);
-        // only ever bites when piecesInRing==1, leaving a ~60° gap + accent ring
-        readonly property double centralAngle: Math.min(300.0, 360.0/piecesInRing)
+        // cap at 180°: a lone window's 360° slice is degenerate (chord→0), and the
+        // chord (= preview width) is widest at 180°, so this gives the biggest preview.
+        // Only bites when piecesInRing==1; for 2+ windows 360/n is already ≤180.
+        readonly property double centralAngle: Math.min(120.0, 360.0/piecesInRing)
 
         caption: model.caption
         minimized: model.minimized
