@@ -3,14 +3,14 @@
   "KPlugin": {
     "Authors": [
       {
-        "Email": "2me@pavelk.ru",
-        "Name": "Pavel K"
+        "Email": "hello@saf1.me",
+        "Name": "Safwan Usaid Lubdhak"
       }
     ],
-    "Description": "Pie Switcher",
-    "Id": "pie",
+    "Description": "Circular Alt+Tab switcher",
+    "Id": "circular",
     "License": "GPL",
-    "Name": "Pie",
+    "Name": "Circular Alt+Tab",
     "Version": "1.0"
   }
 }
