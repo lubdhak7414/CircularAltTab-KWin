@@ -29,7 +29,8 @@ KWin.TabBoxSwitcher {
       }
 
       onClicked: {
-        tabBox.model.activate(pie.current);
+        // ignore clicks on the center hole / gaps (no piece under cursor)
+        if ( pie.current>=0 ) { tabBox.model.activate(pie.current); }
       }
 
       onCloseRequested: (idx)=>{
@@ -114,8 +115,17 @@ KWin.TabBoxSwitcher {
       // reset current BEFORE updateData so bindings re-evaluate after delegates are created
       pie.current =-1;
       pie.updateData();
-      wnd.x =KWin.Workspace.cursorPos.x-pie.implicitWidth/2;
-      wnd.y =KWin.Workspace.cursorPos.y-pie.implicitHeight/2;
+      // center on cursor, then clamp to the screen so the pie never opens off-screen
+      let g =tabBox.screenGeometry;
+      let cx =KWin.Workspace.cursorPos.x-pie.implicitWidth/2;
+      let cy =KWin.Workspace.cursorPos.y-pie.implicitHeight/2;
+      if ( g && g.width>0 && g.height>0 ) {
+        wnd.x =Math.max(g.x, Math.min(cx, g.x+g.width-pie.implicitWidth));
+        wnd.y =Math.max(g.y, Math.min(cy, g.y+g.height-pie.implicitHeight));
+      } else {
+        wnd.x =cx;
+        wnd.y =cy;
+      }
       wnd.visible =true;
       pie.opacity =1.0;
       // restore current after Repeater created delegates, otherwise itemAt(current)==null
