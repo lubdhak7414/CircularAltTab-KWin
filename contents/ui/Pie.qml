@@ -9,6 +9,9 @@ Rectangle {
   property int current: -1
   property var ringPieces: []
 
+  // max slices per ring before spilling to the next ring (≈ 360/maxPerRing° min arc)
+  readonly property int maxPerRing: 12
+
   // base sizes (DPI-aware); the actual sizes taper as window count grows
   readonly property double baseRingHeight: Kirigami.Units.gridUnit*12
   readonly property double baseInRadius: Kirigami.Units.gridUnit*2
@@ -86,7 +89,26 @@ Rectangle {
   }
 
   function updateData() {
-    _private.updateData();
+    let rp = computeRingPieces();
+    if ( JSON.stringify(rp) !== JSON.stringify(pie.ringPieces) ) {
+      pie.ringPieces = rp;
+    } else {
+      _private.updateData();
+    }
+  }
+
+  // returns a per-ring capacity array summing EXACTLY to pices.count
+  function computeRingPieces() {
+    let n = pices.count;
+    if ( n <= 0 ) { return []; }
+    let rings = Math.ceil(n / maxPerRing);
+    let base  = Math.floor(n / rings);
+    let rem   = n % rings;
+    let arr = [];
+    for ( let r = 0; r < rings; r++ ) {
+      arr.push(base + (r >= rings - rem ? 1 : 0));
+    }
+    return arr;
   }
 
   // cycle selection by step (+1 / -1), wrapping; shared by wheel + arrow keys
@@ -143,11 +165,11 @@ Rectangle {
       id: pices
 
       onModelChanged: {
-        _private.updateData();
+        pie.updateData();
       }
 
       Component.onCompleted: {
-        _private.updateData();
+        pie.updateData();
       }
 
       delegate: Piece {

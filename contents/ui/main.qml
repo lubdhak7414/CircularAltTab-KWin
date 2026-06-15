@@ -16,7 +16,10 @@ KWin.TabBoxSwitcher {
     Pie {
       id: pie
       model: tabBox.model
-      bg.color: Kirigami.Theme.backgroundColor
+      bg.color: Qt.rgba(Kirigami.Theme.backgroundColor.r,
+                        Kirigami.Theme.backgroundColor.g,
+                        Kirigami.Theme.backgroundColor.b,
+                        0.72)
       opacity: 0.0
 
       Behavior on opacity {
