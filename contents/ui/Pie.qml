@@ -1,5 +1,6 @@
 import QtQuick
 import org.kde.kirigami as Kirigami
+import org.kde.kwin as KWin
 
 Rectangle {
   id: pie
@@ -195,7 +196,17 @@ Rectangle {
         // Only bites when piecesInRing==1; for 2+ windows 360/n is already ≤180.
         readonly property double centralAngle: Math.min(180.0, 360.0/piecesInRing)
 
-        caption: model.caption
+        // lookup live KWin::Window for real-time caption (ClientModel never emits dataChanged)
+        readonly property var kwinWindow: {
+            var windows = KWin.Workspace.windows;
+            for (var i = 0; i < windows.length; i++) {
+                if (String(windows[i].internalId) === String(model.windowId)) {
+                    return windows[i];
+                }
+            }
+            return null;
+        }
+        caption: kwinWindow ? kwinWindow.caption : model.caption
         minimized: model.minimized
         isSelected: pie.current === index
         // selected piece renders on top so accent ring isn't covered by neighbors
