@@ -99,8 +99,10 @@ Rectangle {
   Kirigami.PlaceholderMessage {
     anchors.centerIn: parent
     width: parent.width*0.5
+    // render above the opaque bg disc (a later sibling), otherwise it's hidden
+    z: 100
     visible: pices.count===0
-    text: "No open windows"
+    text: "No active windows."
   }
 
   MouseArea {
@@ -155,7 +157,9 @@ Rectangle {
         readonly property int ringIdx: _private.pieceToRing[index] || 0
         readonly property int piecesInRing: _private.ringPieces[ringIdx] || 1
         readonly property int idxInRing: _private.idxsInRing[index] || 0
-        readonly property double centralAngle: 360.0/piecesInRing
+        // cap at 300° so a lone window isn't a degenerate 360° slice (chord→0);
+        // only ever bites when piecesInRing==1, leaving a ~60° gap + accent ring
+        readonly property double centralAngle: Math.min(300.0, 360.0/piecesInRing)
 
         caption: model.caption
         minimized: model.minimized
