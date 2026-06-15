@@ -157,10 +157,10 @@ Rectangle {
         readonly property int ringIdx: _private.pieceToRing[index] || 0
         readonly property int piecesInRing: _private.ringPieces[ringIdx] || 1
         readonly property int idxInRing: _private.idxsInRing[index] || 0
-        // cap at 120°: a lone window's 360° slice is degenerate (chord→0), and the
-        // chord (= preview width) is widest at 120°, so this gives the biggest preview.
-        // Only bites when piecesInRing==1; for 2+ windows 360/n is already ≤120.
-        readonly property double centralAngle: Math.min(120.0, 360.0/piecesInRing)
+        // cap at 180°: a lone window's 360° slice is degenerate (chord→0), and the
+        // chord (= preview width) is widest at 180°, so this gives the biggest preview.
+        // Only bites when piecesInRing==1; for 2+ windows 360/n is already ≤180.
+        readonly property double centralAngle: Math.min(180.0, 360.0/piecesInRing)
 
         caption: model.caption
         minimized: model.minimized
