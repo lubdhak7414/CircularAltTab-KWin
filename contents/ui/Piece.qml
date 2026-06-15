@@ -79,6 +79,7 @@ Item {
     Item {
       id: contentWrapper
       visible: !piece.minimized
+      opacity: 0.75
       anchors.top: parent.top
       anchors.topMargin: -20
       anchors.horizontalCenter: parent.horizontalCenter
@@ -103,42 +104,78 @@ Item {
         ]
       }
     }
+  }
 
-    // large app icon for minimized windows (no live thumbnail)
-    Kirigami.Icon {
-      id: fallbackIcon
-      visible: piece.minimized
-      source: icon.source
-      width: Math.min(piece.width*0.45, Kirigami.Units.iconSizes.large*piece.iconScale)
-      height: width
-      anchors.horizontalCenter: parent.horizontalCenter
-      anchors.top: parent.top
-      anchors.topMargin: (rOut-rIn)/2 - height/2
-      smooth: true
-      transform: Rotation {
-        origin.x: fallbackIcon.width/2
-        origin.y: fallbackIcon.height/2
-        angle: -piece.rotation
-      }
+  // icon + edge glow outside maskedContent — Glow traces the icon's silhouette
+  // (not a disc), and since it's a uniform edge expansion the piece rotation
+  // doesn't create the rotation-artifact that a directional DropShadow would.
+
+  Glow {
+    id: iconGlow
+    source: icon
+    visible: !piece.minimized
+    anchors.fill: icon
+    color: Kirigami.Theme.highlightColor
+    radius: 8
+    samples: 16
+    spread: 0.3
+    transform: Rotation {
+      origin.x: icon.width / 2
+      origin.y: icon.height / 2
+      angle: -piece.rotation
     }
+  }
 
-    Kirigami.Icon {
-      id: icon
-      width: Kirigami.Units.iconSizes.large*piece.iconScale
-      height: Kirigami.Units.iconSizes.large*piece.iconScale
-      anchors.horizontalCenter: parent.horizontalCenter
-      anchors.top: parent.top
-      // centered on the ring (midway between rIn and rOut), not at the pie center
-      anchors.topMargin: (rOut-rIn)/2 - height/2
-      smooth: true
-      antialiasing: true
-      transform: Rotation {
-        origin {
-          x: icon.width/2
-          y: icon.height/2
-        }
-        angle: -piece.rotation
+  Kirigami.Icon {
+    id: icon
+    width: Kirigami.Units.iconSizes.large*piece.iconScale
+    height: Kirigami.Units.iconSizes.large*piece.iconScale
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    // centered on the ring (midway between rIn and rOut), not at the pie center
+    anchors.topMargin: (rOut-rIn)/2 - height/2
+    smooth: true
+    antialiasing: true
+    transform: Rotation {
+      origin {
+        x: icon.width/2
+        y: icon.height/2
       }
+      angle: -piece.rotation
+    }
+  }
+
+  Glow {
+    id: fallbackIconGlow
+    source: fallbackIcon
+    visible: piece.minimized
+    anchors.fill: fallbackIcon
+    color: Kirigami.Theme.highlightColor
+    radius: 8
+    samples: 16
+    spread: 0.3
+    transform: Rotation {
+      origin.x: fallbackIcon.width / 2
+      origin.y: fallbackIcon.height / 2
+      angle: -piece.rotation
+    }
+  }
+
+  // large app icon for minimized windows (no live thumbnail)
+  Kirigami.Icon {
+    id: fallbackIcon
+    visible: piece.minimized
+    source: icon.source
+    width: Math.min(piece.width*0.45, Kirigami.Units.iconSizes.large*piece.iconScale)
+    height: width
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.top: parent.top
+    anchors.topMargin: (rOut-rIn)/2 - height/2
+    smooth: true
+    transform: Rotation {
+      origin.x: fallbackIcon.width/2
+      origin.y: fallbackIcon.height/2
+      angle: -piece.rotation
     }
   }
 
