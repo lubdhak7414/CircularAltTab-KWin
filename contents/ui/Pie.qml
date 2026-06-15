@@ -175,6 +175,10 @@ Rectangle {
         pie.updateData();
       }
 
+      onCountChanged: {
+        pie.updateData();
+      }
+
       Component.onCompleted: {
         pie.updateData();
       }
