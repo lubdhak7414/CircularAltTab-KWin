@@ -5,9 +5,16 @@ Rectangle {
   id: pie
   color: "transparent"
 
-  property alias model: pices.model
+  property alias model: pieces.model
   property int current: -1
   property var ringPieces: []
+
+  // user-tunable visual preferences
+  property double selectedScale: 1.06
+  property double nonSelectedOpacity: 0.6
+  property double minimizedOpacity: 0.7
+  property double bgAlpha: 0.72
+  property double captionFontScale: 1.5
 
   // max slices per ring before spilling to the next ring (≈ 360/maxPerRing° min arc)
   readonly property int maxPerRing: 12
@@ -17,7 +24,7 @@ Rectangle {
   readonly property double baseInRadius: Kirigami.Units.gridUnit*2
   readonly property double baseRingSpacing: Kirigami.Units.gridUnit*0.5
   // 1.0 up to 4 windows, then shrinks ~3%/window, clamped to [0.55, 1.0]
-  readonly property double sizeFactor: Math.min(1.0, Math.max(0.55, 1.0-(pices.count-4)*0.03))
+  readonly property double sizeFactor: Math.min(1.0, Math.max(0.55, 1.0-(pieces.count-4)*0.03))
   property double ringHeight: baseRingHeight*sizeFactor
   property double inRadius: baseInRadius*sizeFactor
   property double ringSpacing: baseRingSpacing*sizeFactor
@@ -25,10 +32,10 @@ Rectangle {
   property alias bg: bg
 
   // angle and caption of the selected piece - drives the center pointer/label
-  readonly property double currentAngle: (current>=0 && current<pices.count && pices.itemAt(current))
-      ? pices.itemAt(current).rotation : NaN
-  readonly property string currentCaption: (current>=0 && current<pices.count && pices.itemAt(current))
-      ? pices.itemAt(current).caption : ""
+  readonly property double currentAngle: (current>=0 && current<pieces.count && pieces.itemAt(current))
+      ? pieces.itemAt(current).rotation : NaN
+  readonly property string currentCaption: (current>=0 && current<pieces.count && pieces.itemAt(current))
+      ? pieces.itemAt(current).caption : ""
 
   signal clicked(var mouse);
   signal closeRequested(int idx);
@@ -45,7 +52,7 @@ Rectangle {
 
     function updateData() {
       let pr =[0], rp =[0], ir =[0];
-      for (let i=0, summ =0, j =0, ring =0; i<pices.count; ++i, ++j) {
+      for (let i=0, summ =0, j =0, ring =0; i<pieces.count; ++i, ++j) {
         if ( ring<pie.ringPieces.length && i>=summ+pie.ringPieces[ring] ) { summ +=pie.ringPieces[ring]; ring++; rp[ring] =0; j =0; }
         pr[i] =ring;
         ir[i] =j;
@@ -69,7 +76,7 @@ Rectangle {
     const ty =y-height/2;
     const d =tx*tx+ty*ty;
     let mouseAngle =(Math.atan2(tx, -ty)*180.0/Math.PI+360)%360;
-    for (let i=0; i<pices.count; ++i) {
+    for (let i=0; i<pieces.count; ++i) {
       const ring =_private.pieceToRing[i];
       const n =_private.ringPieces[ring];
       const j =_private.idxsInRing[i];
@@ -97,9 +104,9 @@ Rectangle {
     }
   }
 
-  // returns a per-ring capacity array summing EXACTLY to pices.count
+  // returns a per-ring capacity array summing EXACTLY to pieces.count
   function computeRingPieces() {
-    let n = pices.count;
+    let n = pieces.count;
     if ( n <= 0 ) { return []; }
     let rings = Math.ceil(n / maxPerRing);
     let base  = Math.floor(n / rings);
@@ -113,9 +120,9 @@ Rectangle {
 
   // cycle selection by step (+1 / -1), wrapping; shared by wheel + arrow keys
   function cycle(step) {
-    if ( pices.count<=0 ) { return; }
-    if ( pie.current<0 ) { pie.current =(step>0)? 0 : pices.count-1; }
-    else { pie.current =(pie.current+step+pices.count)%pices.count; }
+    if ( pieces.count<=0 ) { return; }
+    if ( pie.current<0 ) { pie.current =(step>0)? 0 : pieces.count-1; }
+    else { pie.current =(pie.current+step+pieces.count)%pieces.count; }
   }
 
   Kirigami.PlaceholderMessage {
@@ -123,7 +130,7 @@ Rectangle {
     width: parent.width*0.5
     // render above the opaque bg disc (a later sibling), otherwise it's hidden
     z: 100
-    visible: pices.count===0
+    visible: pieces.count===0
     text: "No active windows."
   }
 
@@ -162,7 +169,7 @@ Rectangle {
     }
 
     Repeater {
-      id: pices
+      id: pieces
 
       onModelChanged: {
         pie.updateData();
@@ -189,10 +196,10 @@ Rectangle {
         isSelected: pie.current === index
         // selected piece renders on top so accent ring isn't covered by neighbors
         z: isSelected ? 1 : 0
-        opacity: (pie.current>=0 && pie.current!==index)? 0.6 : (model.minimized? 0.7 : 1.0)
+        opacity: (pie.current>=0 && pie.current!==index)? pie.nonSelectedOpacity : (model.minimized? pie.minimizedOpacity : 1.0)
         // scale from center to avoid clipping outside the window
         transformOrigin: Item.Center
-        scale: (pie.current===index)? 1.06 : 1.0
+        scale: (pie.current===index)? pie.selectedScale : 1.0
         Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration; } }
         Behavior on scale { NumberAnimation { duration: Kirigami.Units.shortDuration; } }
 

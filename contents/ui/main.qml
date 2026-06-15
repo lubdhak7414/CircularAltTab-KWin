@@ -19,7 +19,7 @@ KWin.TabBoxSwitcher {
       bg.color: Qt.rgba(Kirigami.Theme.backgroundColor.r,
                         Kirigami.Theme.backgroundColor.g,
                         Kirigami.Theme.backgroundColor.b,
-                        0.72)
+                        pie.bgAlpha)
       opacity: 0.0
 
       Behavior on opacity {
@@ -33,10 +33,14 @@ KWin.TabBoxSwitcher {
 
       onClicked: {
         // ignore clicks on the center hole / gaps (no piece under cursor)
+        // model.activate() is undocumented KWin API — no stability guarantee.
+        // For click activation only; keyboard flow uses currentIndex + Alt-release.
         if ( pie.current>=0 ) { tabBox.model.activate(pie.current); }
       }
 
       onCloseRequested: (idx)=>{
+        // model.close() is undocumented KWin API — no stability guarantee.
+        // No documented alternative exists for closing windows from a TabBox switcher.
         if ( idx>=0 ) { tabBox.model.close(idx); }
       }
 
@@ -90,6 +94,19 @@ KWin.TabBoxSwitcher {
           Component.onCompleted: requestPaint()
         }
 
+        Rectangle {
+          id: captionBg
+          anchors.centerIn: captionLabel
+          width: Math.min(captionLabel.implicitWidth, captionLabel.width) + Kirigami.Units.largeSpacing * 2
+          height: captionLabel.implicitHeight + Kirigami.Units.smallSpacing
+          radius: Kirigami.Units.cornerRadius
+          color: Qt.rgba(Kirigami.Theme.backgroundColor.r,
+                         Kirigami.Theme.backgroundColor.g,
+                         Kirigami.Theme.backgroundColor.b,
+                         0.75)
+          visible: captionLabel.text !== ""
+        }
+
         Text {
           id: captionLabel
           anchors.horizontalCenter: parent.horizontalCenter
@@ -103,10 +120,8 @@ KWin.TabBoxSwitcher {
           maximumLineCount: 3
           elide: Text.ElideRight
           font.family: Kirigami.Theme.defaultFont.family
-          font.pointSize: Math.round(Kirigami.Theme.defaultFont.pointSize*1.5)
+          font.pointSize: Math.round(Kirigami.Theme.defaultFont.pointSize*pie.captionFontScale)
           color: Kirigami.Theme.textColor
-          style: Text.Outline
-          styleColor: Kirigami.Theme.backgroundColor
           text: pie.currentCaption
         }
       }
