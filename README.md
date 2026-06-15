@@ -34,7 +34,7 @@ sudo apt install qt6-5compat-dev
 - Pie-slice window layout centered on cursor
 - Live window thumbnails (icons for minimized windows)
 - Mouse hover, click, scroll wheel, and keyboard navigation
-- Multi-ring layout when you have more than 12 windows
+- Multi-ring layout when you have more than 8 windows
 - Middle-click to close windows
 - Semi-transparent background that adapts to your Plasma theme
 
@@ -93,7 +93,7 @@ contents/ui/
 **Implementation notes:**
 
 - Hit-testing uses static geometry, not animated positions, to prevent hover thrashing
-- Windows fill rings evenly (max 12 per ring); any remainder goes to the outer rings
+- Windows fill rings evenly (max 8 per ring); any remainder goes to the outer rings
 - Single-window mode caps the slice at 180° (a full 360° circle is unusable)
 - `model.activate()` and `model.close()` are undocumented KWin API — no stability guarantee
 

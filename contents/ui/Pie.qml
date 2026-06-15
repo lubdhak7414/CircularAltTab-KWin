@@ -18,7 +18,7 @@ Rectangle {
   property double captionFontScale: 1.5
 
   // max slices per ring before spilling to the next ring (≈ 360/maxPerRing° min arc)
-  readonly property int maxPerRing: 12
+  readonly property int maxPerRing: 8
 
   // base sizes (DPI-aware); the actual sizes taper as window count grows
   readonly property double baseRingHeight: Kirigami.Units.gridUnit*12
