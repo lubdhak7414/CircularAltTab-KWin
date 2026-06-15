@@ -111,8 +111,8 @@ KWin.TabBoxSwitcher {
           id: captionLabel
           anchors.horizontalCenter: parent.horizontalCenter
           anchors.top: parent.top
-          // below needle base when pointing down (base at ~inRadius*1.4)
-          anchors.topMargin: pie.inRadius*1.6
+          // below needle tip when pointing down (tip at ~inRadius*1.92)
+          anchors.topMargin: pie.inRadius*1.85
           // wider than center hole so long titles aren't clipped early
           width: pie.inRadius*6
           horizontalAlignment: Text.AlignHCenter
