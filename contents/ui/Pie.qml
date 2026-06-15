@@ -6,11 +6,18 @@ Rectangle {
   color: "transparent"
 
   property alias model: pices.model
-  property double ringHeight: Kirigami.Units.gridUnit*12
-  property double inRadius: Kirigami.Units.gridUnit*2
   property int current: -1
   property var ringPieces: []
-  property double ringSpacing: Kirigami.Units.gridUnit*0.5
+
+  // base sizes (DPI-aware); the actual sizes taper as window count grows
+  readonly property double baseRingHeight: Kirigami.Units.gridUnit*12
+  readonly property double baseInRadius: Kirigami.Units.gridUnit*2
+  readonly property double baseRingSpacing: Kirigami.Units.gridUnit*0.5
+  // 1.0 up to 4 windows, then shrinks ~3%/window, clamped to [0.55, 1.0]
+  readonly property double sizeFactor: Math.min(1.0, Math.max(0.55, 1.0-(pices.count-4)*0.03))
+  property double ringHeight: baseRingHeight*sizeFactor
+  property double inRadius: baseInRadius*sizeFactor
+  property double ringSpacing: baseRingSpacing*sizeFactor
   readonly property int ringsCount: _private.ringPieces.length
   property alias bg: bg
 
@@ -82,6 +89,13 @@ Rectangle {
     _private.updateData();
   }
 
+  // cycle selection by step (+1 / -1), wrapping; shared by wheel + arrow keys
+  function cycle(step) {
+    if ( pices.count<=0 ) { return; }
+    if ( pie.current<0 ) { pie.current =(step>0)? 0 : pices.count-1; }
+    else { pie.current =(pie.current+step+pices.count)%pices.count; }
+  }
+
   Kirigami.PlaceholderMessage {
     anchors.centerIn: parent
     width: parent.width*0.5
@@ -110,10 +124,7 @@ Rectangle {
     }
 
     onWheel: (wheel)=>{
-      if ( pices.count<=0 ) { return; }
-      let step =(wheel.angleDelta.y>0)? -1 : 1;
-      if ( pie.current<0 ) { pie.current =(step>0)? 0 : pices.count-1; }
-      else { pie.current =(pie.current+step+pices.count)%pices.count; }
+      pie.cycle(wheel.angleDelta.y>0 ? -1 : 1);
     }
 
     onPositionChanged: (mouse) => {

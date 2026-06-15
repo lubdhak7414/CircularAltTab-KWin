@@ -16,6 +16,9 @@ Item {
   property bool minimized: false
   property bool isSelected: false
 
+  // shrink icons on narrow slices (≥45° = full size, tapering to 0.45×)
+  readonly property double iconScale: Math.max(0.45, 1.0-(angle<45 ? (45-angle)/90 : 0))
+
   // half-angle in radians (used frequently in arc calculations)
   readonly property double angle2: angle*Math.PI/360.0
   // chord length at outer radius
@@ -106,7 +109,7 @@ Item {
       id: fallbackIcon
       visible: piece.minimized
       source: icon.source
-      width: Math.min(piece.width*0.45, Kirigami.Units.iconSizes.large)
+      width: Math.min(piece.width*0.45, Kirigami.Units.iconSizes.large*piece.iconScale)
       height: width
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.top: parent.top
@@ -121,8 +124,8 @@ Item {
 
     Kirigami.Icon {
       id: icon
-      width: Kirigami.Units.iconSizes.large
-      height: Kirigami.Units.iconSizes.large
+      width: Kirigami.Units.iconSizes.large*piece.iconScale
+      height: Kirigami.Units.iconSizes.large*piece.iconScale
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.top: parent.top
       // centered on the ring (midway between rIn and rOut), not at the pie center
