@@ -2,7 +2,7 @@
 
 A radial Alt+Tab switcher for KDE Plasma 6.
 
-![Preview](readme/preview1.png)
+![Preview](assets/preview1.png)
 
 Windows are arranged as pie slices around the cursor. Hover to select, click to activate, middle-click to close. Works with keyboard, mouse, and scroll wheel.
 
@@ -93,7 +93,7 @@ contents/ui/
 **Implementation notes:**
 
 - Hit-testing uses static geometry, not animated positions, to prevent hover thrashing
-- Windows are grouped into rings of up to 12; remainder distributes to the last rings
+- Windows fill rings evenly (max 12 per ring); any remainder goes to the outer rings
 - Single-window mode caps the slice at 180° (a full 360° circle is unusable)
 - `model.activate()` and `model.close()` are undocumented KWin API — no stability guarantee
 
