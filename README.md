@@ -1,6 +1,6 @@
 # Circular Alt+Tab
 
-A radial Alt+Tab switcher for KDE Plasma 6.
+A circular Alt+Tab switcher for KDE Plasma 6.
 
 <p align="center">
   <img src="assets/preview1.png" width="48%">
@@ -18,14 +18,14 @@ Windows are arranged as pie slices around the cursor. Hover to select, click to 
 ### Option 1 - Manual copy
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/CircularAltTab-KWin.git
+git clone https://github.com/lubdhak7414/CircularAltTab-KWin.git
 cp -r CircularAltTab-KWin ~/.local/share/kwin/tabbox/circular
 ```
 
 ### Option 2 - Install script
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/CircularAltTab-KWin.git
+git clone https://github.com/lubdhak7414/CircularAltTab-KWin.git
 cd CircularAltTab-KWin
 ./install.sh
 ```
