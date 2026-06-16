@@ -106,7 +106,7 @@ Item {
     }
   }
 
-  // icon + edge glow outside maskedContent — Glow traces the icon's silhouette
+  // icon + edge glow outside maskedContent - Glow traces the icon's silhouette
   // (not a disc), and since it's a uniform edge expansion the piece rotation
   // doesn't create the rotation-artifact that a directional DropShadow would.
 

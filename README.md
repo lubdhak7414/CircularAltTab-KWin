@@ -2,20 +2,27 @@
 
 A radial Alt+Tab switcher for KDE Plasma 6.
 
-![Preview](assets/preview1.png) ![Preview](assets/preview2.png)
+<p align="center">
+  <img src="assets/preview1.png" width="48%">
+  <img src="assets/preview2.png" width="48%">
+</p>
+
+<p align="center">
+  <sub>Wallpapers: <a href="https://basicappleguy.com/basicappleblog/topographic-amoeba">Topographic Amoeba</a> by Basic Apple Guy, <a href="https://www.reddit.com/r/wallpaper/comments/kcffkg/1920x1080_penguin_linux_wallpaper_dark_light_svg/">Penguin Linux Wallpaper</a> via r/wallpaper</sub>
+</p>
 
 Windows are arranged as pie slices around the cursor. Hover to select, click to activate, middle-click to close. Works with keyboard, mouse, and scroll wheel.
 
 ## Installation
 
-### Option 1 — Manual copy
+### Option 1 - Manual copy
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/CircularAltTab-KWin.git
 cp -r CircularAltTab-KWin ~/.local/share/kwin/tabbox/circular
 ```
 
-### Option 2 — Install script
+### Option 2 - Install script
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/CircularAltTab-KWin.git
@@ -61,12 +68,12 @@ Tested on:
 | Session | Wayland |
 | Distro | CachyOS Linux |
 
-Not tested on X11 or other Plasma 6.x point releases — reports welcome.
+Not tested on X11 or other Plasma 6.x point releases - reports welcome.
 
 ## Known Limitations
 
 - `model.activate()` / `model.close()` are undocumented KWin TabBox API. A future Plasma update could break activation/close without warning.
-- Closing a window with unsaved changes: middle-click sends the same close request every time (no special handling on this plugin's side). The target app's own "unsaved changes" dialog pops up as it normally would; if it then disappears along with the window on a second middle-click, that's the app's own dialog/window-manager interaction, not behavior this plugin implements or guarantees.
+- Closing a window with unsaved changes triggers that app's own confirmation dialog, same as any other close request - this plugin has no special handling for it.
 - `OpacityMask` clipping of live thumbnails on Wayland is unverified on compositors other than KWin's own.
 - Multi-monitor: switcher opens on the screen under the cursor; behavior with mixed-DPI/scale setups across monitors is untested.
 - No screen reader / accessibility support.
@@ -117,10 +124,10 @@ Pie {
 Pure QML, no build step. Edit files in place, then reload:
 
 ```bash
-# Safe — reloads Plasma shell only
+# Safe - reloads Plasma shell only
 plasmashell --replace
 
-# Nuclear — kills your session apps
+# Nuclear - kills your session apps
 kwin_wayland --replace
 ```
 
@@ -128,42 +135,25 @@ kwin_wayland --replace
 
 ```
 contents/ui/
-  main.qml    — Entry point, window positioning, fade animation
-  Pie.qml     — Ring layout, hit-testing, selection cycling
-  Piece.qml   — Individual window sector (thumbnail, icon, accent ring)
+  main.qml    - Entry point, window positioning, fade animation
+  Pie.qml     - Ring layout, hit-testing, selection cycling
+  Piece.qml   - Individual window sector (thumbnail, icon, accent ring)
 ```
 
 **Architecture notes:**
 
-The overall shape still follows the original — `TabBoxSwitcher → Window → Pie → Repeater → Piece`, rotation-based positioning, and `OpacityMask` for the annular sector clipping. A few things have been adjusted along the way:
+`TabBoxSwitcher → Window → Pie → Repeater → Piece`, rotation-based positioning, `OpacityMask` for annular sector clipping.
 
-- Icon sizing uses `Kirigami.Units` now instead of fixed pixels, and tapers on narrow slices
-- Multi-ring distribution uses a proper remainder algorithm (`computeRingPieces()`)
-- Hit-testing reads static ring geometry rather than per-frame item properties
-- The background, captions, selection indicator, and fade animation use Kirigami theme colors
-- Russian comments were translated to English
-
-**Implementation notes:**
-
-- Hit-testing uses static geometry, not animated positions, to prevent hover thrashing
-- Windows fill rings evenly (max 8 per ring); any remainder goes to the outer rings
-- Single-window mode caps the slice at 180° (a full 360° circle is unusable)
-- `model.activate()` and `model.close()` are undocumented KWin API — no stability guarantee
+- Hit-testing reads static ring geometry, not animated/per-frame positions - prevents hover jitter when the hovered piece scales up
+- Multi-ring distribution uses a remainder algorithm (`computeRingPieces()`); windows fill rings evenly (max 8/ring), remainder goes to outer rings
+- Single-window mode caps the slice at 180° (a full 360° circle is degenerate)
+- Icon sizing uses `Kirigami.Units` and tapers on narrow slices
+- Background, captions, selection indicator, and fade animation use Kirigami theme colors
 
 ## Credits
 
-Originally based on [PieTabSwitcher-KWin](https://github.com/Riflio/PieTabSwitcher-KWin) by Pavel K.
-
-The current version has been substantially reworked:
-- Multi-ring layout for large window counts
-- Static-geometry hit-testing to prevent hover jitter
-- Live window thumbnails with OpacityMask rendering
-- Mouse, keyboard, and scroll wheel support
-- Edge case handling (no windows, one window, minimized windows)
-- Plasma 6 port (unversioned QML imports, Kirigami theme integration)
-- User-tunable visual properties
-- Caption contrast fix for light themes
+Originally based on [PieTabSwitcher-KWin](https://github.com/Riflio/PieTabSwitcher-KWin) by Pavel K. Substantially reworked since (Plasma 6 port, multi-ring layout, live thumbnails, scroll support, theme integration) - see Architecture notes above for what changed.
 
 ## License
 
-GPLv3 — see [LICENSE](LICENSE).
+GPLv3 - see [LICENSE](LICENSE).
