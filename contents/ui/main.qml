@@ -35,13 +35,13 @@ KWin.TabBoxSwitcher {
         // ignore clicks on the center hole / gaps (no piece under cursor)
         // model.activate() is undocumented KWin API — no stability guarantee.
         // For click activation only; keyboard flow uses currentIndex + Alt-release.
-        if ( pie.current>=0 ) { tabBox.model.activate(pie.current); }
+        if ( tabBox.model && pie.current>=0 ) { tabBox.model.activate(pie.current); }
       }
 
       onCloseRequested: (idx)=>{
         // model.close() is undocumented KWin API — no stability guarantee.
         // No documented alternative exists for closing windows from a TabBox switcher.
-        if ( idx>=0 ) { tabBox.model.close(idx); }
+        if ( tabBox.model && idx>=0 ) { tabBox.model.close(idx); }
       }
 
       onCurrentChanged: {

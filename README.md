@@ -49,6 +49,28 @@ sudo pacman -S qt6-5compat
 sudo apt install qt6-5compat-dev
 ```
 
+## Compatibility
+
+Tested on:
+
+| Component | Version |
+|-----------|---------|
+| Plasma | 6.6.5 |
+| KWin | 6.6.5 |
+| Qt | 6.11.1 |
+| Session | Wayland |
+| Distro | CachyOS Linux |
+
+Not tested on X11 or other Plasma 6.x point releases — reports welcome.
+
+## Known Limitations
+
+- `model.activate()` / `model.close()` are undocumented KWin TabBox API. A future Plasma update could break activation/close without warning.
+- Closing a window with unsaved changes: middle-click sends the same close request every time (no special handling on this plugin's side). The target app's own "unsaved changes" dialog pops up as it normally would; if it then disappears along with the window on a second middle-click, that's the app's own dialog/window-manager interaction, not behavior this plugin implements or guarantees.
+- `OpacityMask` clipping of live thumbnails on Wayland is unverified on compositors other than KWin's own.
+- Multi-monitor: switcher opens on the screen under the cursor; behavior with mixed-DPI/scale setups across monitors is untested.
+- No screen reader / accessibility support.
+
 ## Features
 
 - Pie-slice window layout centered on cursor
