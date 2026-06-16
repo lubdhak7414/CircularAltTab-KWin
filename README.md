@@ -75,7 +75,7 @@ Not tested on X11 or other Plasma 6.x point releases - reports welcome.
 - `model.activate()` / `model.close()` are undocumented KWin TabBox API. A future Plasma update could break activation/close without warning.
 - Closing a window with unsaved changes triggers that app's own confirmation dialog, same as any other close request - this plugin has no special handling for it.
 - `OpacityMask` clipping of live thumbnails on Wayland is unverified on compositors other than KWin's own.
-- Multi-monitor: switcher opens on the screen under the cursor; behavior with mixed-DPI/scale setups across monitors is untested.
+- Multi-monitor: verified on a mixed-resolution dual-monitor setup (1080p + 768p); other DPI/scale combinations are untested.
 - No screen reader / accessibility support.
 
 ## Features
