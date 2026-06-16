@@ -1,14 +1,12 @@
 # Changelog
 
-## 1.1
-
-- Add `install.sh --uninstall`
-- Add Compatibility and Known Limitations sections to README
-- Guard window activate/close against a null TabBox model
-- Fix circle overflowing the screen at high window counts (`screenFit`, scales the ring layout to fit `screenGeometry`)
-- Verify Wayland and X11 compatibility, document rendering-cost profiling results
-- Misc README/metadata cleanup
-
 ## 1.0
 
-- Initial release: pie/circular multi-ring TabBox switcher for KDE Plasma 6
+Initial release. Forked from [PieTabSwitcher-KWin](https://github.com/Riflio/PieTabSwitcher-KWin), substantially rewritten:
+
+- Ported to KDE Plasma 6 / Qt 6
+- Multi-ring layout for high window counts, with a screen-fit clamp so the circle never overflows the display
+- Live window thumbnails, theme-integrated colors and fonts
+- Mouse hover/click/scroll and keyboard navigation, middle-click to close
+- Install/uninstall script
+- Verified on both Wayland and X11
