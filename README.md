@@ -60,23 +60,23 @@ sudo apt install qt6-5compat-dev
 
 Tested on:
 
-| Component | Version |
-|-----------|---------|
-| Plasma | 6.6.5 |
-| KWin | 6.6.5 |
-| Qt | 6.11.1 |
-| Session | Wayland |
-| Distro | CachyOS Linux |
+| Component | Version | Session |
+|-----------|---------|---------|
+| Plasma | 6.6.5 | Wayland, X11 |
+| KWin | 6.6.5 | Wayland, X11 |
+| Qt | 6.11.1 | Wayland, X11 |
+| Distro | CachyOS Linux | - |
 
-Not tested on X11 or other Plasma 6.x point releases - reports welcome.
+Not tested on other Plasma 6.x point releases - reports welcome.
 
 ## Known Limitations
 
 - `model.activate()` / `model.close()` are undocumented KWin TabBox API. A future Plasma update could break activation/close without warning.
 - Closing a window with unsaved changes triggers that app's own confirmation dialog, same as any other close request - this plugin has no special handling for it.
-- `OpacityMask` clipping of live thumbnails on Wayland is unverified on compositors other than KWin's own.
+- `OpacityMask` clipping of live thumbnails is only verified on KWin itself (Wayland and X11); other compositors are untested.
 - Multi-monitor: verified on a mixed-resolution dual-monitor setup (1080p + 768p); other DPI/scale combinations are untested.
-- No screen reader / accessibility support.
+- No screen reader support, and none is planned - the pie layout is inherently spatial/visual, and KWin's TabBox overlay API doesn't expose an accessibility-tree hook to attach to. A screen-reader-usable switcher would need a different interaction model entirely, not an incremental fix.
+- Reduced-motion and high-contrast are inherited for free, not implemented: all animation durations use `Kirigami.Units.shortDuration`/`longDuration` and all colors use `Kirigami.Theme.*`, so both follow the system-wide Plasma animation-speed and color-scheme settings automatically.
 - Tested with 30 simultaneous windows (4 rings) on an RTX 3070: peak GPU SM utilization 52%, peak KWin CPU 40% of one core, idle between interactions - no sustained load or visible stutter at realistic-to-extreme window counts.
 
 ## Features
