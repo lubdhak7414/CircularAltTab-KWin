@@ -26,9 +26,11 @@ Rectangle {
   readonly property double baseRingSpacing: Kirigami.Units.gridUnit*0.5
   // 1.0 up to 4 windows, then shrinks ~3%/window, clamped to [0.55, 1.0]
   readonly property double sizeFactor: Math.min(1.0, Math.max(0.55, 1.0-(pieces.count-4)*0.03))
-  property double ringHeight: baseRingHeight*sizeFactor
-  property double inRadius: baseInRadius*sizeFactor
-  property double ringSpacing: baseRingSpacing*sizeFactor
+  // extra shrink so the circle fits the active screen; set by main.qml before showing
+  property double screenFit: 1.0
+  property double ringHeight: baseRingHeight*sizeFactor*screenFit
+  property double inRadius: baseInRadius*sizeFactor*screenFit
+  property double ringSpacing: baseRingSpacing*sizeFactor*screenFit
   readonly property int ringsCount: _private.ringPieces.length
   property alias bg: bg
 

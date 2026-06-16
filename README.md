@@ -77,6 +77,7 @@ Not tested on X11 or other Plasma 6.x point releases - reports welcome.
 - `OpacityMask` clipping of live thumbnails on Wayland is unverified on compositors other than KWin's own.
 - Multi-monitor: verified on a mixed-resolution dual-monitor setup (1080p + 768p); other DPI/scale combinations are untested.
 - No screen reader / accessibility support.
+- Tested with 30 simultaneous windows (4 rings) on an RTX 3070: peak GPU SM utilization 52%, peak KWin CPU 40% of one core, idle between interactions - no sustained load or visible stutter at realistic-to-extreme window counts.
 
 ## Features
 

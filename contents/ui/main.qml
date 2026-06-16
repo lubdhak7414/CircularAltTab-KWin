@@ -132,9 +132,18 @@ KWin.TabBoxSwitcher {
     if ( visible ) {
       // reset current BEFORE updateData so bindings re-evaluate after delegates are created
       pie.current =-1;
+      pie.screenFit =1.0;
       pie.updateData();
-      // center on cursor, then clamp to the screen so the pie never opens off-screen
       let g =tabBox.screenGeometry;
+      // shrink further if the natural size (many windows -> many rings) would
+      // overflow the screen - sizeFactor alone floors at 0.55 and doesn't know
+      // about screen size
+      if ( g && g.width>0 && g.height>0 ) {
+        const margin =0.95;
+        const fit =Math.min(1.0, g.width*margin/pie.implicitWidth, g.height*margin/pie.implicitHeight);
+        if ( fit<1.0 ) { pie.screenFit =fit; }
+      }
+      // center on cursor, then clamp to the screen so the pie never opens off-screen
       let cx =KWin.Workspace.cursorPos.x-pie.implicitWidth/2;
       let cy =KWin.Workspace.cursorPos.y-pie.implicitHeight/2;
       if ( g && g.width>0 && g.height>0 ) {
