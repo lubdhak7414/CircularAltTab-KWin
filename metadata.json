@@ -9,8 +9,8 @@
     ],
     "Description": "Circular Alt+Tab switcher",
     "Id": "circular",
-    "License": "GPL",
+    "License": "GPL-3.0-only",
     "Name": "Circular Alt+Tab",
-    "Version": "1.0"
+    "Version": "1.1"
   }
 }

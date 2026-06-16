@@ -2,17 +2,37 @@
 
 A radial Alt+Tab switcher for KDE Plasma 6.
 
-![Preview](assets/preview1.png)
+![Preview](assets/preview1.png) ![Preview](assets/preview2.png)
 
 Windows are arranged as pie slices around the cursor. Hover to select, click to activate, middle-click to close. Works with keyboard, mouse, and scroll wheel.
 
 ## Installation
 
-Copy the repo into KWin's tabbox directory:
+### Option 1 — Manual copy
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/CircularAltTab-KWin.git
 cp -r CircularAltTab-KWin ~/.local/share/kwin/tabbox/circular
+```
+
+### Option 2 — Install script
+
+```bash
+git clone https://github.com/YOUR_USERNAME/CircularAltTab-KWin.git
+cd CircularAltTab-KWin
+./install.sh
+```
+
+To install to a custom location:
+
+```bash
+./install.sh ~/.local/share/kwin/tabbox/circular
+```
+
+To uninstall:
+
+```bash
+./install.sh --uninstall
 ```
 
 Then select "Circular Alt+Tab" in System Settings → Window Management → Task Switcher.
@@ -43,6 +63,7 @@ sudo apt install qt6-5compat-dev
 | Input | Action |
 |-------|--------|
 | Alt+Tab | Open switcher |
+| Alt+Shift+Tab | Open switcher, cycle backwards |
 | Hover | Highlight window |
 | Click | Activate window |
 | Middle-click | Close window |
@@ -89,6 +110,16 @@ contents/ui/
   Pie.qml     — Ring layout, hit-testing, selection cycling
   Piece.qml   — Individual window sector (thumbnail, icon, accent ring)
 ```
+
+**Architecture notes:**
+
+The overall shape still follows the original — `TabBoxSwitcher → Window → Pie → Repeater → Piece`, rotation-based positioning, and `OpacityMask` for the annular sector clipping. A few things have been adjusted along the way:
+
+- Icon sizing uses `Kirigami.Units` now instead of fixed pixels, and tapers on narrow slices
+- Multi-ring distribution uses a proper remainder algorithm (`computeRingPieces()`)
+- Hit-testing reads static ring geometry rather than per-frame item properties
+- The background, captions, selection indicator, and fade animation use Kirigami theme colors
+- Russian comments were translated to English
 
 **Implementation notes:**
 
