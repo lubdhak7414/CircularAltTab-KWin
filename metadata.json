@@ -8,9 +8,11 @@
       }
     ],
     "Description": "Circular Alt+Tab switcher",
-    "Id": "circular",
+    "Icon": "preferences-system-windows",
+    "Id": "circularalttab",
     "License": "GPL-3.0-only",
     "Name": "Circular Alt+Tab",
-    "Version": "1.0"
+    "Version": "1.0",
+    "Website": "https://github.com/lubdhak7414/CircularAltTab-KWin"
   }
 }

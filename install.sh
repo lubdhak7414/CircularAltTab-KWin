@@ -2,13 +2,13 @@
 set -euo pipefail
 
 if [ "${1:-}" = "--uninstall" ]; then
-  DEST="${2:-$HOME/.local/share/kwin/tabbox/circular}"
+  DEST="${2:-$HOME/.local/share/kwin/tabbox/circularalttab}"
   rm -rf "$DEST"
   echo "Removed $DEST"
   exit 0
 fi
 
-DEST="${1:-$HOME/.local/share/kwin/tabbox/circular}"
+DEST="${1:-$HOME/.local/share/kwin/tabbox/circularalttab}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 mkdir -p "$DEST"

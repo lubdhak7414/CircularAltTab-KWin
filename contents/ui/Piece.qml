@@ -15,6 +15,7 @@ Item {
   property string caption: ""
   property bool minimized: false
   property bool isSelected: false
+  property var windowId
 
   // shrink icons on narrow slices (≥45° = full size, tapering to 0.45×)
   readonly property double iconScale: Math.max(0.45, 1.0-(angle<45 ? (45-angle)/90 : 0))

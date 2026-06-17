@@ -15,11 +15,18 @@ Windows are arranged as pie slices around the cursor. Hover to select, click to 
 
 ## Installation
 
-### Option 1 - Manual copy
+### Option 1 - GitHub Release (no git required)
+
+Download the latest release zip from the [Releases page](https://github.com/lubdhak7414/CircularAltTab-KWin/releases/latest) and extract it:
 
 ```bash
-git clone https://github.com/lubdhak7414/CircularAltTab-KWin.git
-cp -r CircularAltTab-KWin ~/.local/share/kwin/tabbox/circular
+unzip CircularAltTab-KWin-*.zip -d ~/.local/share/kwin/tabbox/
+```
+
+Or using `kpackagetool6`:
+
+```bash
+kpackagetool6 --install CircularAltTab-KWin-*.zip --type KWin/WindowSwitcher
 ```
 
 ### Option 2 - Install script
@@ -33,7 +40,7 @@ cd CircularAltTab-KWin
 To install to a custom location:
 
 ```bash
-./install.sh ~/.local/share/kwin/tabbox/circular
+./install.sh ~/.local/share/kwin/tabbox/circularalttab
 ```
 
 To uninstall:
@@ -71,7 +78,7 @@ Not tested on other Plasma 6.x point releases - reports welcome.
 
 ## Known Limitations
 
-- `model.activate()` / `model.close()` are undocumented KWin TabBox API. A future Plasma update could break activation/close without warning.
+- `model.activate()` / `model.close()`, `KWin.Workspace.cursorPos`, and `KWin.Workspace.windows` are undocumented KWin API. A future Plasma update could break activation, close, cursor positioning, or caption lookup without warning.
 - Closing a window with unsaved changes triggers that app's own confirmation dialog, same as any other close request - this plugin has no special handling for it.
 - `OpacityMask` clipping of live thumbnails is only verified on KWin itself (Wayland and X11); other compositors are untested.
 - Multi-monitor: verified on a mixed-resolution dual-monitor setup (1080p + 768p); other DPI/scale combinations are untested.

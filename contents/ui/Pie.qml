@@ -86,7 +86,7 @@ Rectangle {
       const rIn =inRadius+(ringHeight+ringSpacing)*ring;
       const rOut =rIn+ringHeight;
       if ( d<rIn*rIn || d>rOut*rOut ) { continue; }
-      const central =360.0/n;
+      const central =Math.min(180.0, 360.0/n);
       const startAngle =j*central-central/2.0;
       const endAngle =j*central+central/2.0;
       if ( startAngle<0 || endAngle>360 ) {
@@ -228,6 +228,7 @@ Rectangle {
         y: pie.height/2-height
         rotation: idxInRing*centralAngle
 
+        windowId: model.windowId
         icon.source: model.icon
 
         Behavior on angle {
