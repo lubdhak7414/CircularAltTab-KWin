@@ -15,7 +15,11 @@ Windows are arranged as pie slices around the cursor. Hover to select, click to 
 
 ## Installation
 
-### Option 1 - GitHub Release (no git required)
+### Option 1 - KDE Store
+
+Install from System Settings → Window Management → Task Switcher → Get New Task Switchers, and search for "Circular Alt-Tab".
+
+### Option 2 - GitHub Release
 
 Download the latest release zip from the [Releases page](https://github.com/lubdhak7414/CircularAltTab-KWin/releases/latest) and extract it:
 
@@ -29,24 +33,11 @@ Or using `kpackagetool6`:
 kpackagetool6 --install CircularAltTab-KWin-*.zip --type KWin/WindowSwitcher
 ```
 
-### Option 2 - Install script
+### Option 3 - Manual
 
 ```bash
 git clone https://github.com/lubdhak7414/CircularAltTab-KWin.git
-cd CircularAltTab-KWin
-./install.sh
-```
-
-To install to a custom location:
-
-```bash
-./install.sh ~/.local/share/kwin/tabbox/circularalttab
-```
-
-To uninstall:
-
-```bash
-./install.sh --uninstall
+cp -r CircularAltTab-KWin ~/.local/share/kwin/tabbox/circularalttab
 ```
 
 Then select "Circular Alt+Tab" in System Settings → Window Management → Task Switcher.
@@ -69,9 +60,10 @@ Tested on:
 
 | Component | Version | Session |
 |-----------|---------|---------|
-| Plasma | 6.6.5 | Wayland, X11 |
-| KWin | 6.6.5 | Wayland, X11 |
+| Plasma | 6.6.5, 6.7.0 | Wayland, X11 |
+| KWin | 6.6.5, 6.7.0 | Wayland, X11 |
 | Qt | 6.11.1 | Wayland, X11 |
+| Kernel | 7.0.12-1-cachyos | - |
 | Distro | CachyOS Linux | - |
 
 Not tested on other Plasma 6.x point releases - reports welcome.

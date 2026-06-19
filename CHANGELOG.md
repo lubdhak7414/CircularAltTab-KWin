@@ -47,7 +47,6 @@ Initial release. Forked from [PieTabSwitcher-KWin](https://github.com/Riflio/Pie
 - Center item updates only after Repeater creates delegates (50ms timer workaround for itemAt(current)==null race)
 
 ### Packaging & metadata
-- Install script with custom destination support and uninstall
 - Renamed plugin Id from `circular` to `circularalttab` to avoid KDE Store collisions
 - Updated metadata.json: author to Safwan Usaid Lubdhak, added Icon and Website fields, License to GPL-3.0-only
 - Plugin name changed to "Circular Alt+Tab"
